@@ -26,7 +26,6 @@ public class SignUpCommand implements Command, DataExtractor<UserDTO> {
             httpServletRequest.getSession().setAttribute("role", "user");
             httpServletRequest.getSession().setAttribute("login", userDTO.getLogin());
             httpServletRequest.getSession().setAttribute("user", user);
-
         }
         return "pages/user.jsp";
     }
