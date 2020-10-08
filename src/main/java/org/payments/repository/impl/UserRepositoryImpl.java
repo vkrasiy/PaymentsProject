@@ -16,7 +16,7 @@ public class UserRepositoryImpl extends DBRepository implements UserRepository, 
     @Override
     public Optional<User> getUser(int id) {
         User user = null;
-        String query = "select first_name, last_name, email, phone_number, account_status_id, balance_id, id from users where isAdmin=0 and id=?;";
+        String query = "select first_name, last_name, email, login,  phone_number, balance_id, id from users where isAdmin=0 and id=?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -82,10 +82,10 @@ public class UserRepositoryImpl extends DBRepository implements UserRepository, 
     }
 
     @Override
-    public User getUser(String login, String pass, boolean isAdmin) {
-        User user = null;
+    public Optional<User> getUser(String login, String pass, boolean isAdmin) {
+        User user = User.newBuilder().build();
         System.out.println(login + " : " +pass +" : "+isAdmin);
-        String query = "select first_name, last_name, email, phone_number, account_status_id, balance_id, id from users where  login=? and password=? and isAdmin=?;";
+        String query = "select first_name, last_name, email, login,  phone_number, balance_id, id from users where  login=? and password=? and isAdmin=?;";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(3, isAdmin ? 1 : 0);
             statement.setString(2, pass);
@@ -96,7 +96,7 @@ public class UserRepositoryImpl extends DBRepository implements UserRepository, 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return user;
+        return Optional.ofNullable(user);
     }
 
     @Override

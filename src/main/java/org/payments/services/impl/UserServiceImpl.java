@@ -14,6 +14,7 @@ import org.payments.repository.impl.RepositoryFactoryImpl;
 import org.payments.services.BalanceService;
 import org.payments.services.CardService;
 import org.payments.services.UserService;
+import org.payments.util.impl.UserNotFoundException;
 
 import java.util.List;
 
@@ -41,20 +42,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO signIn(String login, String password, boolean isAdmin) {
-        String signedPass = signatureMaker.getSignature(password);
-        User user = repositoryFactory.getUserRepository().getUser(login, signedPass, isAdmin);
-        return user != null ? userConvertor.toDto(user) : null;
+    public UserDTO signIn(String login, String password, boolean isAdmin) throws UserNotFoundException {
+        User user =  repositoryFactory.getUserRepository()
+                .getUser(login, signatureMaker.getSignature(password), isAdmin)
+                .orElseThrow(() -> new UserNotFoundException("User doesn`t exists"));
+        return userConvertor.toDto(user);
     }
 
     @Override
     public UserDTO signUp(UserDTO userDTO, String password) {
-        UserDTO newUser = null;
         String signedPass = signatureMaker.getSignature(password);
         userDTO.setBalance(balanceService.createBalance());
         User user = userConvertor.toEntity(userDTO);
         user.setPassword(signedPass);
-        newUser = userConvertor.toDto(repositoryFactory.getUserRepository().getUser(repositoryFactory.getUserRepository().addUser(user)).get());
+        UserDTO newUser = userConvertor.toDto(repositoryFactory.getUserRepository().getUser(repositoryFactory.getUserRepository().addUser(user)).get());
         return newUser;
     }
 

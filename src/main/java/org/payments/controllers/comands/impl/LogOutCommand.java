@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 public class LogOutCommand implements Command {
     @Override
     public String executeCommand(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
-        httpServletRequest.getSession().setAttribute("user", null);
-        httpServletRequest.getSession().removeAttribute("role");
         SessionUtil.removeUserFromSession(httpServletRequest.getSession());
+        httpServletRequest.getSession().setAttribute("role", null);
+        httpServletRequest.getSession().setAttribute("user", null);
         return "/index.jsp";
     }
 

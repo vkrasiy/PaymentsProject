@@ -9,6 +9,6 @@ public interface UserRepository {
     int addUser(User user);
     void deleteUser(String id);
     void updateUser(User user);
-    User getUser(String login, String pass, boolean isAdmin);
+    Optional<User> getUser(String login, String pass, boolean isAdmin);
     boolean existsUserWithSuchLogin(String login);
 }

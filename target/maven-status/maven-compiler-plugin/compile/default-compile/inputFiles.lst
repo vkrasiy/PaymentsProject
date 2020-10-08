@@ -10,6 +10,7 @@ D:\Projects\MyFinalProject\src\main\java\org\payments\controllers\comands\impl\A
 D:\Projects\MyFinalProject\src\main\java\org\payments\controllers\listener\SessionListener.java
 D:\Projects\MyFinalProject\src\main\java\org\payments\services\BalanceService.java
 D:\Projects\MyFinalProject\src\main\java\org\payments\services\impl\ServiceFactoryImpl.java
+D:\Projects\MyFinalProject\src\main\java\org\payments\util\impl\UserNotFoundException.java
 D:\Projects\MyFinalProject\src\main\java\org\payments\convertors\impl\BalanceConvertor.java
 D:\Projects\MyFinalProject\src\main\java\org\payments\convertors\impl\CardConvertor.java
 D:\Projects\MyFinalProject\src\main\java\org\payments\dtos\impl\TariffDTO.java

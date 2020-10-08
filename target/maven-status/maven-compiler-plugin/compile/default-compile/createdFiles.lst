@@ -53,6 +53,7 @@ org\payments\convertors\impl\UserConvertor.class
 org\payments\dtos\impl\PaymentDTO$Builder.class
 org\payments\entities\Card$Builder.class
 org\payments\util\CardNotFoundException.class
+org\payments\util\impl\UserNotFoundException.class
 org\payments\services\CardService.class
 org\payments\repository\impl\UserRepositoryImpl.class
 org\payments\entities\Payment$Builder.class

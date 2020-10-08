@@ -9,6 +9,7 @@ import org.payments.util.impl.SessionUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashSet;
 import java.util.Objects;
 
 public class SignUpCommand implements Command, DataExtractor<UserDTO> {
@@ -21,7 +22,7 @@ public class SignUpCommand implements Command, DataExtractor<UserDTO> {
     @Override
     public String executeCommand(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
         UserDTO userDTO = extractData(httpServletRequest);
-        if (!SessionUtil.checkUserIsLogged(httpServletRequest, userDTO.getLogin())) {
+        if (!checkUserIsLogged(httpServletRequest, userDTO.getLogin())) {
             UserDTO user = userService.signUp(userDTO, httpServletRequest.getParameter("password"));
             httpServletRequest.getSession().setAttribute("role", "user");
             httpServletRequest.getSession().setAttribute("login", userDTO.getLogin());
@@ -51,5 +52,17 @@ public class SignUpCommand implements Command, DataExtractor<UserDTO> {
                     .setPhone(phone).build();
         }
         return userDTO;
+    }
+
+    public boolean checkUserIsLogged(HttpServletRequest request, String login) {
+        HashSet<String> loggedUsers = (HashSet<String>) request.getSession().getServletContext()
+                .getAttribute("loggedUsers");
+        if (loggedUsers.stream().anyMatch(login::equals)) {
+            return true;
+        }
+        loggedUsers.add(login);
+        request.getSession().getServletContext()
+                .setAttribute("loggedUsers", loggedUsers);
+        return false;
     }
 }

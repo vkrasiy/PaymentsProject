@@ -59,8 +59,6 @@ public class UserConvertor extends AbstractConvertor<User, UserDTO> {
 
     @Override
     public void convertSpecificFieldsToDto(User source, UserDTO destination) {
-        Optional<Balance> balance = balanceRepository.getBalanceById(source.getBalanceId());
-        System.out.println(balance+"convert balance spec");
-        destination.setBalance(balanceConvertor.toDto(balance.orElseGet(Balance::new)));
+        destination.setBalance(balanceConvertor.toDto(balanceRepository.getBalanceById(source.getBalanceId()).orElseGet(Balance::new)));
     }
 }
